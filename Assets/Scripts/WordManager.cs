@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -50,6 +51,11 @@ public class WordManager : MonoBehaviour
         {
             ResetWord();
         }
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            SubmitWord();
+        }
     }
 
     public void AddLetter(char letter)
@@ -61,6 +67,22 @@ public class WordManager : MonoBehaviour
     public string GetCurrentWord()
     {
         return currentWord;
+    }
+
+    public void SubmitWord()
+    {
+        if (currentWord != string.Empty)
+        {
+            EnemySpawner.instance.DescendAll();
+
+            PlayerInfo.instance.SetAmmo(currentWord.Length);
+
+            ResetWord();
+        }
+        else
+        {
+            Debug.Log("Word is empty.");
+        }
     }
 
     public void ResetWord()

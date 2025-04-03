@@ -1,4 +1,0 @@
-repository "SpacebarInvaders 2025-03-25_20-50-37/SpacebarInvaders@20066252195563@cloud"
-  path "/"
-    br "/main"
-    co "/main"

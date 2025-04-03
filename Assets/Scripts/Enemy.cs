@@ -7,8 +7,9 @@ public class Enemy : MonoBehaviour
     public TextMeshProUGUI healthText;
 
     private float speed = 1f;
-    private float fallDistance = 5f;
+    private float fallDistance = 3f;
     private int xpValue;
+    private PlayerInfo playerInfo => PlayerInfo.instance;
 
     public void Initialize(int health)
     {
@@ -21,9 +22,15 @@ public class Enemy : MonoBehaviour
     {
         if (hp <= 0)
         {
-            LevelManager.instance.AddXP(xpValue);
-            gameObject.SetActive(false);
+            KillEnemy();
         }
+    }
+
+    private void KillEnemy()
+    {
+        LevelManager.instance.AddXP(xpValue);
+
+        EnemySpawner.instance.RemoveDeadEnemies();
     }
 
     private void UpdateHealth()
@@ -33,13 +40,17 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage()
     {
-        hp--;
+        hp -= playerInfo.playerDamage;
         UpdateHealth();
     }
 
     void OnMouseDown()
     {
-        TakeDamage();
+        if (playerInfo.playerAmmo > 0)
+        {
+            TakeDamage();
+            playerInfo.SetAmmo(playerInfo.playerAmmo - 1);
+        }
     }
 
     public void StartDescending()

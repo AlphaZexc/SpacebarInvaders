@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
+    public static EnemySpawner instance { get; private set; }
     public GameObject enemyPrefab;
     public Transform spawnPoint;
     private int enemyHealth = 1;
@@ -11,7 +12,12 @@ public class EnemySpawner : MonoBehaviour
 
     void Start()
     {
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(this);
 
+        SpawnEnemy();
     }
 
     void SpawnEnemy()
@@ -25,28 +31,27 @@ public class EnemySpawner : MonoBehaviour
         enemyHealth++; // Gradually increase enemy HP
     }
 
-    void Update()
+    public void RemoveDeadEnemies()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        // Remove destroyed enemies safely
+        activeEnemies.RemoveAll(enemy =>
         {
-            // Remove destroyed enemies safely
-            activeEnemies.RemoveAll(enemy =>
+            if (enemy.hp <= 0)
             {
-                if (enemy.hp <= 0)
-                {
-                    Destroy(enemy.gameObject);
-                    return true;
-                }
-                return false;
-            });
-
-            // Make remaining enemies descend
-            foreach (var enemy in activeEnemies)
-            {
-                enemy.StartDescending();
+                Destroy(enemy.gameObject);
+                return true;
             }
+            return false;
+        });
+    }
 
-            SpawnEnemy();
+    public void DescendAll()
+    {
+        foreach (var enemy in activeEnemies)
+        {
+            enemy.StartDescending();
         }
+
+        SpawnEnemy();
     }
 }
