@@ -17,4 +17,9 @@ public class Button : MonoBehaviour
     {
         obj.SetActive(false);
     }
+
+    public void EnableHexagons()
+    {
+        WordManager.instance.EnableHexagons(true);
+    }
 }

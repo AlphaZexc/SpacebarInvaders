@@ -90,4 +90,12 @@ public class WordManager : MonoBehaviour
         currentWord = string.Empty;
         wordText.text = string.Empty;
     }
+
+    public void EnableHexagons(bool active)
+    {
+        foreach (var hex in currentHexes)
+        {
+            hex.gameObject.SetActive(active);
+        }
+    }
 }

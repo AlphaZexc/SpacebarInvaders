@@ -46,6 +46,7 @@ public class LevelManager : MonoBehaviour
         maxXp *= xpGrowthValue; // Increase XP requirement for next level
 
         powerupPanel.SetActive(true);
+        WordManager.instance.EnableHexagons(false);
     }
 
     void UpdateUI()

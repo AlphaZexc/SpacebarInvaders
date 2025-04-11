@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -56,5 +57,24 @@ public class Enemy : MonoBehaviour
     public void StartDescending()
     {
         transform.position += Vector3.down * speed * fallDistance;
+
+        // StartCoroutine(Descend());
+
+        // transform.position = new Vector3(Mathf.MoveTowards(transform.position.x, transform.position.x + (speed * fallDistance), 5), transform.position.y, transform.position.z);
     }
+
+    //private IEnumerator Descend()
+    //{
+    //    float prevX = transform.position.x;
+    //    float targetX = prevX + (speed * fallDistance);
+
+    //    while (transform.position.x <= targetX)
+    //    {
+    //        float currentX = Mathf.MoveTowards(transform.position.x, targetX, 5);
+
+    //        transform.position = new Vector3(currentX, transform.position.y, transform.position.z);
+
+    //        yield return null;
+    //    }
+    //}
 }
