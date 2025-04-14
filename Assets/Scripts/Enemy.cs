@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour
 {
     public int hp { get; private set; }
     public TextMeshProUGUI healthText;
+    public Coroutine isDescending;
 
     private float speed = 1f;
     private float fallDistance = 3f;
@@ -54,27 +55,33 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void StartDescending()
+    public Coroutine StartDescending()
     {
-        transform.position += Vector3.down * speed * fallDistance;
-
-        // StartCoroutine(Descend());
-
-        // transform.position = new Vector3(Mathf.MoveTowards(transform.position.x, transform.position.x + (speed * fallDistance), 5), transform.position.y, transform.position.z);
+        return StartCoroutine(Descend());
     }
 
-    //private IEnumerator Descend()
-    //{
-    //    float prevX = transform.position.x;
-    //    float targetX = prevX + (speed * fallDistance);
+    private IEnumerator Descend()
+    {
+        float prevY = transform.position.y;
+        float targetY = prevY - (speed * fallDistance); // subtract to move downward
 
-    //    while (transform.position.x <= targetX)
-    //    {
-    //        float currentX = Mathf.MoveTowards(transform.position.x, targetX, 5);
+        float duration = 0.3f; // total time to complete the movement
+        float elapsedTime = 0f;
 
-    //        transform.position = new Vector3(currentX, transform.position.y, transform.position.z);
+        while (elapsedTime < duration)
+        {
+            float t = elapsedTime / duration; // 0 to 1
+            float newY = Mathf.Lerp(prevY, targetY, t);
 
-    //        yield return null;
-    //    }
-    //}
+            transform.position = new Vector3(transform.position.x, newY, transform.position.z);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Make sure it ends exactly at the target
+        transform.position = new Vector3(transform.position.x, targetY, transform.position.z);
+        isDescending = null;
+    }
+
 }

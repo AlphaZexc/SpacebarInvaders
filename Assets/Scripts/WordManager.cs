@@ -73,9 +73,9 @@ public class WordManager : MonoBehaviour
     {
         if (currentWord != string.Empty)
         {
-            EnemySpawner.instance.DescendAll();
+            StartCoroutine(EnemySpawner.instance.DescendAll());
 
-            PlayerInfo.instance.SetAmmo(currentWord.Length);
+            PlayerInfo.instance.SetAmmo(currentWord.Length + PlayerInfo.instance.playerAmmo);
 
             ResetWord();
         }

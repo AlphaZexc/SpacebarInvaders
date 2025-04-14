@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
@@ -6,7 +8,8 @@ public class EnemySpawner : MonoBehaviour
     public static EnemySpawner instance { get; private set; }
     public GameObject enemyPrefab;
     public Transform spawnPoint;
-    private int enemyHealth = 1;
+    private float enemyHealth = 1;
+    private float enemyHealthCurve = 1;
 
     private List<Enemy> activeEnemies = new List<Enemy>();
 
@@ -25,10 +28,11 @@ public class EnemySpawner : MonoBehaviour
         GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
         Enemy enemyScript = enemy.GetComponent<Enemy>();
 
-        enemyScript.Initialize(enemyHealth);
+        enemyScript.Initialize(Mathf.CeilToInt(enemyHealth));
         activeEnemies.Add(enemyScript);
 
-        enemyHealth++; // Gradually increase enemy HP
+        enemyHealth = (20 / (1 + Mathf.Pow((float)2.71, (float)(-0.15 * enemyHealthCurve + 2)))) - 2;
+        enemyHealthCurve++;
     }
 
     public void RemoveDeadEnemies()
@@ -45,11 +49,11 @@ public class EnemySpawner : MonoBehaviour
         });
     }
 
-    public void DescendAll()
+    public IEnumerator DescendAll()
     {
         foreach (var enemy in activeEnemies)
         {
-            enemy.StartDescending();
+            yield return enemy.StartDescending();
         }
 
         SpawnEnemy();

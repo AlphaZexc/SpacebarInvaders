@@ -1,6 +1,6 @@
-using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class PlayerInfo : MonoBehaviour
 {
@@ -8,7 +8,9 @@ public class PlayerInfo : MonoBehaviour
 
     public int playerDamage { get; private set; } = 1;
     public int playerAmmo { get; private set; } = 0;
+    public float ammoMultiplier = 1f;
     public TextMeshProUGUI ammoText;
+    public List<string> inventory;
 
     private void Awake()
     {
@@ -21,7 +23,7 @@ public class PlayerInfo : MonoBehaviour
     public void SetAmmo(int ammo)
     {
         playerAmmo = ammo;
-        ammoText.text = playerAmmo.ToString();
+        ammoText.text = "Ammo: " + playerAmmo.ToString();
     }
 
     public void SetDamage(int dmg)
