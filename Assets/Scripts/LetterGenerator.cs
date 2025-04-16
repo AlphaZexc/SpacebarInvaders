@@ -5,6 +5,7 @@ public class LetterGenerator
 {
     private char[] consonants = { 'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z' };
     private char[] vowels = { 'A', 'E', 'I', 'O', 'U' };
+    private List<char> usedCharacters = new List<char>();
 
     public List<char> GetRandomLetters(int consonantCount, int vowelCount)
     {
@@ -16,20 +17,43 @@ public class LetterGenerator
         return selectedLetters;
     }
 
+    public char GetRandomLetter(bool consonant)
+    {
+        return GetRandomCharacter(consonant ? consonants : vowels);
+    }
+
+    private char GetRandomCharacter(char[] sourceArray)
+    {
+        List<char> tempList = new List<char>(sourceArray);
+        bool newChar = true;
+
+        int index = Random.Range(0, tempList.Count);
+
+        while (newChar)
+        {
+            foreach (var letter in usedCharacters)
+            {
+                if (tempList[index] == letter)
+                    index = Random.Range(0, tempList.Count);
+                    continue;
+            }
+
+            newChar = false;
+        }
+
+        usedCharacters.Add(tempList[index]);
+        return tempList[index];
+    }
+
     private List<char> GetRandomCharacters(char[] sourceArray, int count)
     {
-        List<char> selected = new List<char>();
-        List<char> tempList = new List<char>(sourceArray);
+        List<char> tempList = new List<char>();
 
         for (int i = 0; i < count; i++)
         {
-            if (tempList.Count == 0) break;
-
-            int index = Random.Range(0, tempList.Count);
-            selected.Add(tempList[index]);
-            tempList.RemoveAt(index); // Avoid duplicate picks
+            tempList.Add(GetRandomCharacter(sourceArray));
         }
 
-        return selected;
+        return tempList;
     }
 }

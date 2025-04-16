@@ -23,7 +23,7 @@ public class EnemySpawner : MonoBehaviour
         SpawnEnemy();
     }
 
-    void SpawnEnemy()
+    private void SpawnEnemy()
     {
         GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
         Enemy enemyScript = enemy.GetComponent<Enemy>();

@@ -4,6 +4,10 @@ using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour
 {
+    private const string POWERUP_LETTER = "Add Letter";
+    private const string POWERUP_AMMO = "1.5x Ammo";
+    private const string POWERUP_BOMB = "Get a Bomb";
+
     public Slider xpSlider;
     public TextMeshProUGUI levelText;
     public GameObject powerupPanel;
@@ -65,26 +69,26 @@ public class LevelManager : MonoBehaviour
         switch (choice1) 
         {
             case 1:
-                this.choice1 = "Add Letter";
+                this.choice1 = POWERUP_LETTER;
                 break;
             case 2:
-                this.choice1 = "Get Bomb";
+                this.choice1 = POWERUP_BOMB;
                 break;
             case 3:
-                this.choice1 = "1.5x Ammo";
+                this.choice1 = POWERUP_AMMO;
                 break;
         }
 
         switch (choice2)
         {
             case 1:
-                this.choice2 = "Add Letter";
+                this.choice2 = POWERUP_LETTER;
                 break;
             case 2:
-                this.choice2 = "Get Bomb";
+                this.choice2 = POWERUP_BOMB;
                 break;
             case 3:
-                this.choice2 = "1.5x Ammo";
+                this.choice2 = POWERUP_AMMO;
                 break;
         }
 
@@ -98,10 +102,36 @@ public class LevelManager : MonoBehaviour
         if (choice == 1)
         {
             Debug.Log($"Choice 1: {choice1}");
+
+            switch (choice1)
+            {
+                case POWERUP_LETTER:
+                    WordManager.instance.AddHexagon();
+                    break;
+                case POWERUP_BOMB:
+                    choice1 = POWERUP_BOMB;
+                    break;
+                case POWERUP_AMMO:
+                    PlayerInfo.instance.ammoMultiplier *= 1.5f;
+                    break;
+            }
         }
         else
         {
             Debug.Log($"Choice 2: {choice2}");
+
+            switch (choice1)
+            {
+                case POWERUP_LETTER:
+                    WordManager.instance.AddHexagon();
+                    break;
+                case POWERUP_BOMB:
+                    choice1 = POWERUP_BOMB;
+                    break;
+                case POWERUP_AMMO:
+                    PlayerInfo.instance.ammoMultiplier *= 1.5f;
+                    break;
+            }
         }
     }
 

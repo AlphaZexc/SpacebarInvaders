@@ -10,6 +10,7 @@ public class WordManager : MonoBehaviour
     public Transform hexagonRoot;
     public TextMeshProUGUI wordText;
 
+    private LetterGenerator letterGenerator = new LetterGenerator();
     private List<char> currentLetters = new List<char>();
     private List<Hexagon> currentHexes = new List<Hexagon>();
     private string currentWord = "";
@@ -24,9 +25,39 @@ public class WordManager : MonoBehaviour
         else
             Destroy(this);
 
-        LetterGenerator generator = new LetterGenerator();
-        currentLetters = generator.GetRandomLetters(3, 2); // 3 consonants, 2 vowels
+        currentLetters = letterGenerator.GetRandomLetters(3, 2); // 3 consonants, 2 vowels
 
+        GenerateGrid();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Backspace))
+        {
+            ResetWord();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            SubmitWord();
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            AddHexagon();
+        }
+    }
+
+    public void GenerateGrid()
+    {
+        // Reset Grid
+        foreach (var hexagon in currentHexes)
+        {
+            Destroy(hexagon.gameObject);
+        }
+        currentHexes.Clear();
+
+        // Generate Grid
         for (int i = 0; i < currentLetters.Count; i++)
         {
             int row = i / gridWidth;
@@ -45,17 +76,11 @@ public class WordManager : MonoBehaviour
         }
     }
 
-    private void Update()
+    public void AddHexagon()
     {
-        if (Input.GetKeyDown(KeyCode.Backspace))
-        {
-            ResetWord();
-        }
+        currentLetters.Add(letterGenerator.GetRandomLetter(true));
 
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            SubmitWord();
-        }
+        GenerateGrid();
     }
 
     public void AddLetter(char letter)
@@ -75,7 +100,7 @@ public class WordManager : MonoBehaviour
         {
             StartCoroutine(EnemySpawner.instance.DescendAll());
 
-            PlayerInfo.instance.SetAmmo(currentWord.Length + PlayerInfo.instance.playerAmmo);
+            PlayerInfo.instance.SetAmmo(PlayerInfo.instance.playerAmmo + Mathf.RoundToInt(currentWord.Length * PlayerInfo.instance.ammoMultiplier));
 
             ResetWord();
         }
