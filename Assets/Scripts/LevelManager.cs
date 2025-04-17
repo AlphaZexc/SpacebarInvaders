@@ -7,20 +7,23 @@ public class LevelManager : MonoBehaviour
     private const string POWERUP_LETTER = "Add Letter";
     private const string POWERUP_AMMO = "1.5x Ammo";
     private const string POWERUP_BOMB = "Get a Bomb";
+    private const float STARTING_MAX_XP = 6f;
 
     public Slider xpSlider;
     public TextMeshProUGUI levelText;
     public GameObject powerupPanel;
     public TextMeshProUGUI choiceText1;
     public TextMeshProUGUI choiceText2;
+    public TextMeshProUGUI scoreText;
 
     public static LevelManager instance { get; private set; }
 
     private int level;
     private float currentXp;
-    private float maxXp = 10;
+    private float maxXp;
     private float xpGrowthValue = 1.2f;
     private string choice1, choice2;
+    private int score;
 
     void Awake()
     {
@@ -31,6 +34,8 @@ public class LevelManager : MonoBehaviour
         else
             Destroy(this);
 
+        level = 1;
+        maxXp = STARTING_MAX_XP;
         UpdateUI();
         powerupPanel.SetActive(false);
     }
@@ -38,10 +43,21 @@ public class LevelManager : MonoBehaviour
     public void AddXP(float amount)
     {
         currentXp += amount;
+        score += Mathf.RoundToInt(amount);
+
         if (currentXp >= maxXp)
         {
             LevelUp();
         }
+        UpdateUI();
+    }
+
+    public void ResetLevel()
+    {
+        maxXp = STARTING_MAX_XP;
+        level = 1;
+        currentXp = 0;
+        score = 0;
         UpdateUI();
     }
 
@@ -109,7 +125,7 @@ public class LevelManager : MonoBehaviour
                     WordManager.instance.AddHexagon();
                     break;
                 case POWERUP_BOMB:
-                    choice1 = POWERUP_BOMB;
+                    PlayerInfo.instance.AddBomb();
                     break;
                 case POWERUP_AMMO:
                     PlayerInfo.instance.ammoMultiplier *= 1.5f;
@@ -120,13 +136,13 @@ public class LevelManager : MonoBehaviour
         {
             Debug.Log($"Choice 2: {choice2}");
 
-            switch (choice1)
+            switch (choice2)
             {
                 case POWERUP_LETTER:
                     WordManager.instance.AddHexagon();
                     break;
                 case POWERUP_BOMB:
-                    choice1 = POWERUP_BOMB;
+                    PlayerInfo.instance.AddBomb();
                     break;
                 case POWERUP_AMMO:
                     PlayerInfo.instance.ammoMultiplier *= 1.5f;
@@ -137,8 +153,10 @@ public class LevelManager : MonoBehaviour
 
     private void UpdateUI()
     {
-        levelText.text = level.ToString();
+        scoreText.text = "Score: " + score.ToString();
+        levelText.text = "Level: " + level.ToString();
         xpSlider.maxValue = maxXp;
         xpSlider.value = currentXp;
     }
+
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -78,8 +77,20 @@ public class WordManager : MonoBehaviour
 
     public void AddHexagon()
     {
-        currentLetters.Add(letterGenerator.GetRandomLetter(true));
+        int consonant = Random.Range(0, 10);
 
+        if (consonant <= 6)
+            currentLetters.Add(letterGenerator.GetRandomLetter(true));
+        else
+            currentLetters.Add(letterGenerator.GetRandomLetter(false));
+
+        GenerateGrid();
+    }
+
+    public void ResetHexagons()
+    {
+        letterGenerator.ResetCharacters();
+        currentLetters = letterGenerator.GetRandomLetters(3, 2); // 3 consonants, 2 vowels
         GenerateGrid();
     }
 

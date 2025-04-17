@@ -1,6 +1,6 @@
 using TMPro;
+using UnityEngine.UI;
 using UnityEngine;
-using System.Collections.Generic;
 
 public class PlayerInfo : MonoBehaviour
 {
@@ -10,7 +10,11 @@ public class PlayerInfo : MonoBehaviour
     public int playerAmmo { get; private set; } = 0;
     public float ammoMultiplier = 1f;
     public TextMeshProUGUI ammoText;
-    public List<string> inventory;
+    public GameObject bombPrefab;
+    public Transform itemPanelTransform;
+
+    private Button bombButton;
+    private int bombDamage = 20;
 
     private void Awake()
     {
@@ -30,4 +34,25 @@ public class PlayerInfo : MonoBehaviour
     {
         playerDamage = dmg;
     }
+
+    public void AddBomb()
+    {
+        bombButton = Instantiate(bombPrefab, itemPanelTransform, false).GetComponent<Button>();
+
+        /*if (bombButton != null)
+        {
+            bombButton.onClick.AddListener(UseBomb);
+        }
+        else
+        {
+            Debug.LogError("The bombPrefab does not have a Button component!");
+        }*/
+    }
+
+    private void UseBomb()
+    {
+        Debug.Log("Bomb used!");
+        EnemySpawner.instance.UseBomb(bombDamage);
+    }
+
 }
