@@ -12,6 +12,7 @@ public class WordManager : MonoBehaviour
     private LetterGenerator letterGenerator = new LetterGenerator();
     private List<char> currentLetters = new List<char>();
     private List<Hexagon> currentHexes = new List<Hexagon>();
+    private List<string> usedWords = new List<string>();
     private string currentWord = "";
     private int gridWidth = 3; // Adjust as needed
     private float hexWidth = 1.1f; // Adjust based on hex size
@@ -27,6 +28,7 @@ public class WordManager : MonoBehaviour
         currentLetters = letterGenerator.GetRandomLetters(3, 2); // 3 consonants, 2 vowels
 
         GenerateGrid();
+        ResetWord();
     }
 
     private void Update()
@@ -107,7 +109,12 @@ public class WordManager : MonoBehaviour
 
     public void SubmitWord()
     {
-        if (currentWord != string.Empty)
+        bool usedWord = false;
+        for (int i = 0; i < usedWords.Count; i++)
+            if (currentWord == usedWords[i])
+                usedWord = true;
+
+        if (!usedWord)
         {
             StartCoroutine(EnemySpawner.instance.DescendAll());
 
@@ -117,7 +124,7 @@ public class WordManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Word is empty.");
+            Debug.Log("Word has been used!");
         }
     }
 

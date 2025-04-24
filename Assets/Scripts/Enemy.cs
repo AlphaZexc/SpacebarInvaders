@@ -8,7 +8,9 @@ public class Enemy : MonoBehaviour
     public TextMeshProUGUI healthText;
     public Coroutine isDescending;
 
+    private Animator anim;
     private float speed = 1f;
+    private int maxHP;
     private float fallDistance = 3f;
     private int xpValue;
     private PlayerInfo playerInfo => PlayerInfo.instance;
@@ -16,8 +18,11 @@ public class Enemy : MonoBehaviour
     public void Initialize(int health)
     {
         hp = health;
+        maxHP = hp;
         xpValue = health;
         UpdateHealth();
+
+        anim = GetComponent<Animator>();
     }
 
     void Update()
@@ -43,6 +48,10 @@ public class Enemy : MonoBehaviour
     public void TakeDamage()
     {
         hp -= playerInfo.playerDamage;
+
+        if (hp <= maxHP / 2)
+            anim.SetBool("halfHealth", true);
+
         UpdateHealth();
     }
 

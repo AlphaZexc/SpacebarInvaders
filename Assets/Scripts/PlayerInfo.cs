@@ -39,20 +39,21 @@ public class PlayerInfo : MonoBehaviour
     {
         bombButton = Instantiate(bombPrefab, itemPanelTransform, false).GetComponent<Button>();
 
-        /*if (bombButton != null)
+        if (bombButton != null)
         {
             bombButton.onClick.AddListener(UseBomb);
         }
         else
         {
             Debug.LogError("The bombPrefab does not have a Button component!");
-        }*/
+        }
     }
 
     private void UseBomb()
     {
         Debug.Log("Bomb used!");
         EnemySpawner.instance.UseBomb(bombDamage);
+        Destroy(bombButton.gameObject);
     }
 
 }
