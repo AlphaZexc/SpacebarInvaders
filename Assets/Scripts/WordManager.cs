@@ -89,22 +89,21 @@ public class WordManager : MonoBehaviour
         GenerateGrid();
     }
 
-    public void ResetHexagons()
-    {
-        letterGenerator.ResetCharacters();
-        currentLetters = letterGenerator.GetRandomLetters(3, 2); // 3 consonants, 2 vowels
-        GenerateGrid();
-    }
-
     public void AddLetter(char letter)
     {
         currentWord += letter;
         wordText.text = currentWord;
     }
 
-    public string GetCurrentWord()
+    public void ResetWordInfo()
     {
-        return currentWord;
+        ResetWord();
+
+        letterGenerator.ResetCharacters();
+        currentLetters = letterGenerator.GetRandomLetters(3, 2); // 3 consonants, 2 vowels
+        GenerateGrid();
+
+        EnableHexagons(true);
     }
 
     public void SubmitWord()

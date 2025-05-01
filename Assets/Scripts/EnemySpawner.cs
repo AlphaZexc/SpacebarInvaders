@@ -92,7 +92,7 @@ public class EnemySpawner : MonoBehaviour
         gameOverPanel.SetActive(true);
         enemyHealthCurve = 1;
         enemyHealth = 1;
-        PlayerInfo.instance.SetAmmo(0);
+        PlayerInfo.instance.ResetPlayerInfo();
         WordManager.instance.EnableHexagons(false);
     }
 

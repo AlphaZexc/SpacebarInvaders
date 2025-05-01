@@ -338,6 +338,7 @@ MonoBehaviour:
   ammoText: {fileID: 2089028177}
   bombPrefab: {fileID: 5881238768295203466, guid: 45cf620237f1c5c4fa325e019f40136d, type: 3}
   itemPanelTransform: {fileID: 1037101716}
+  bombs: []
 --- !u!1 &177097446
 GameObject:
   m_ObjectHideFlags: 0
@@ -1373,8 +1374,8 @@ Transform:
   m_GameObject: {fileID: 870223560}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0036, y: -0.0406, z: 0}
-  m_LocalScale: {x: 5.3967485, y: 9.997035, z: 1}
+  m_LocalPosition: {x: 0.009, y: -0.0406, z: 0}
+  m_LocalScale: {x: 7.339642, y: 9.997035, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

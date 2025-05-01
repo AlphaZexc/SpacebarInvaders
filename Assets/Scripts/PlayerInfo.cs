@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class PlayerInfo : MonoBehaviour
 {
@@ -12,8 +13,8 @@ public class PlayerInfo : MonoBehaviour
     public TextMeshProUGUI ammoText;
     public GameObject bombPrefab;
     public Transform itemPanelTransform;
+    public List<Button> bombs;
 
-    private Button bombButton;
     private int bombDamage = 20;
 
     private void Awake()
@@ -35,13 +36,26 @@ public class PlayerInfo : MonoBehaviour
         playerDamage = dmg;
     }
 
+    public void ResetPlayerInfo()
+    {
+        for (int i = 0; i < bombs.Count; i++)
+        {
+            Destroy(bombs[i].gameObject);
+        }
+
+        bombs.Clear();
+        SetDamage(1);
+        SetAmmo(0);
+    }
+
     public void AddBomb()
     {
-        bombButton = Instantiate(bombPrefab, itemPanelTransform, false).GetComponent<Button>();
+        Button bombButton = Instantiate(bombPrefab, itemPanelTransform, false).GetComponent<Button>();
 
         if (bombButton != null)
         {
             bombButton.onClick.AddListener(UseBomb);
+            bombs.Add(bombButton);
         }
         else
         {
@@ -53,7 +67,8 @@ public class PlayerInfo : MonoBehaviour
     {
         Debug.Log("Bomb used!");
         EnemySpawner.instance.UseBomb(bombDamage);
-        Destroy(bombButton.gameObject);
+        Destroy(bombs[0].gameObject);
+        bombs.Remove(bombs[0]);
     }
 
 }
