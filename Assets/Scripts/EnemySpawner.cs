@@ -54,11 +54,17 @@ public class EnemySpawner : MonoBehaviour
 
     public void UseBomb(int bombDamage)
     {
-        for (int i = 0; i < bombDamage; i++)
+        if (activeEnemies.Count <= 0)
         {
-            int randomEnemy = Random.Range(0, activeEnemies.Count);
-
-            activeEnemies[randomEnemy].TakeDamage();
+            Debug.Log("No enemies!");
+        }
+        else
+        {
+            for (int i = 0; i < bombDamage; i++)
+            {
+                int randomEnemy = Random.Range(0, activeEnemies.Count);
+                activeEnemies[randomEnemy].TakeDamage();
+            }
         }
     }
 

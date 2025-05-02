@@ -67,6 +67,7 @@ public class PlayerInfo : MonoBehaviour
     {
         Debug.Log("Bomb used!");
         EnemySpawner.instance.UseBomb(bombDamage);
+
         Destroy(bombs[0].gameObject);
         bombs.Remove(bombs[0]);
     }
